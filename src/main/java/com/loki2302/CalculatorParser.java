@@ -4,14 +4,14 @@ import org.parboiled.Parboiled;
 import org.parboiled.parserunners.RecoveringParseRunner;
 import org.parboiled.support.ParsingResult;
 
-import com.loki2302.dom.CalculatorNode;
+import com.loki2302.dom.DOMExpression;
 
 
 public class CalculatorParser {
-	public CalculatorNode parse(String expression) {
+	public DOMExpression parse(String expression) {
 		CalculatorGrammar grammar = Parboiled.createParser(CalculatorGrammar.class);
-		ParsingResult<CalculatorNode> result = 
-				new RecoveringParseRunner<CalculatorNode>(grammar.expression())
+		ParsingResult<DOMExpression> result = 
+				new RecoveringParseRunner<DOMExpression>(grammar.expression())
 				.run(expression);
 		return result.resultValue;
 	}

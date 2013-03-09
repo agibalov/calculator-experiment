@@ -1,38 +1,54 @@
 package com.loki2302;
 
-import com.loki2302.dom.ArithmeticOperation;
-import com.loki2302.dom.ArithmeticOperationNode;
-import com.loki2302.dom.CalculatorNode;
-import com.loki2302.dom.CalculatorNodeVisitor;
-import com.loki2302.dom.LiteralNode;
+import com.loki2302.dom.DOMAddExpression;
+import com.loki2302.dom.DOMDivExpression;
+import com.loki2302.dom.DOMExpression;
+import com.loki2302.dom.DOMExpressionVisitor;
+import com.loki2302.dom.DOMLiteralExpression;
+import com.loki2302.dom.DOMMulExpression;
+import com.loki2302.dom.DOMSubExpression;
 
 public class Calculator {
 	public static int calculate(String expression) {
 		CalculatorParser calculatorParser = new CalculatorParser();
-    	CalculatorNode expressionRoot = calculatorParser.parse(expression);
-    	return expressionRoot.accept(new CalculatorNodeVisitor<Integer>() {
+    	DOMExpression expressionRoot = calculatorParser.parse(expression);
+    	return processExpression(expressionRoot);
+	}
+	
+	private static int processExpression(DOMExpression domExpression) {
+		return domExpression.accept(new DOMExpressionVisitor<Integer>() {
 			@Override
-			public Integer visitLiteralNode(LiteralNode node) {
-				return node.getValue();
+			public Integer visitLiteralExpression(DOMLiteralExpression expression) {
+				return expression.getValue();
 			}
 
 			@Override
-			public Integer visitArithmeticOperationNode(ArithmeticOperationNode node) {
-				int left = node.getLeftNode().accept(this);
-				int right = node.getRightNode().accept(this);
-				ArithmeticOperation operation = node.getOperation();
-				if(operation == ArithmeticOperation.Add) {
-					return left + right;
-				} else if(operation == ArithmeticOperation.Sub) {
-					return left - right;
-				} else if(operation == ArithmeticOperation.Mul) {
-					return left * right;
-				} else if(operation == ArithmeticOperation.Div) {
-					return left / right;
-				}
-				
-				throw new RuntimeException();
-			}        		
-    	});
+			public Integer visitAddExpression(DOMAddExpression expression) {
+				int leftValue = processExpression(expression.getLeftExpression());
+				int rightValue = processExpression(expression.getRightExpression());
+				return leftValue + rightValue;
+			}
+
+			@Override
+			public Integer visitSubExpression(DOMSubExpression expression) {
+				int leftValue = processExpression(expression.getLeftExpression());
+				int rightValue = processExpression(expression.getRightExpression());
+				return leftValue - rightValue;
+			}
+
+			@Override
+			public Integer visitMulExpression(DOMMulExpression expression) {
+				int leftValue = processExpression(expression.getLeftExpression());
+				int rightValue = processExpression(expression.getRightExpression());
+				return leftValue * rightValue;
+			}
+
+			@Override
+			public Integer visitDivExpression(DOMDivExpression expression) {
+				int leftValue = processExpression(expression.getLeftExpression());
+				int rightValue = processExpression(expression.getRightExpression());
+				return leftValue / rightValue;
+			}			
+		});
 	}
 }

@@ -1,9 +1,9 @@
 package com.loki2302.dom;
 
-public class LiteralNode implements CalculatorNode {
+public class DOMLiteralExpression implements DOMExpression {
 	private final int value;
 	
-	public LiteralNode(int value) {
+	public DOMLiteralExpression(int value) {
 		this.value = value;
 	}
 	
@@ -12,8 +12,8 @@ public class LiteralNode implements CalculatorNode {
 	}
 	
 	@Override
-	public <T> T accept(CalculatorNodeVisitor<T> visitor) {
-		return visitor.visitLiteralNode(this);
+	public <T> T accept(DOMExpressionVisitor<T> visitor) {
+		return visitor.visitLiteralExpression(this);
 	}
 	
 	@Override

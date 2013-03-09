@@ -4,13 +4,15 @@ import org.parboiled.BaseParser;
 import org.parboiled.Rule;
 import org.parboiled.support.Var;
 
-import com.loki2302.dom.ArithmeticOperation;
-import com.loki2302.dom.ArithmeticOperationNode;
-import com.loki2302.dom.CalculatorNode;
-import com.loki2302.dom.LiteralNode;
+import com.loki2302.dom.DOMAddExpression;
+import com.loki2302.dom.DOMBinaryExpression;
+import com.loki2302.dom.DOMDivExpression;
+import com.loki2302.dom.DOMExpression;
+import com.loki2302.dom.DOMLiteralExpression;
+import com.loki2302.dom.DOMMulExpression;
+import com.loki2302.dom.DOMSubExpression;
 
-
-public class CalculatorGrammar extends BaseParser<CalculatorNode> {
+public class CalculatorGrammar extends BaseParser<DOMExpression> {
 	public Rule expression() {
 		return FirstOf(			
 				additiveExpression(),
@@ -30,8 +32,8 @@ public class CalculatorGrammar extends BaseParser<CalculatorNode> {
 						FirstOf("+", "-"),
 						op.set(matchedChar()),
 						multiplicativeExpression(),
-						push(new ArithmeticOperationNode(
-								ParserHelpers.arithmeticOperationFromChar(op.get()), 
+						push(ParserHelpers.makeBinaryExpression(
+								op.get(), 
 								pop(1), 
 								pop()))						
 						));
@@ -45,8 +47,8 @@ public class CalculatorGrammar extends BaseParser<CalculatorNode> {
 						FirstOf("*", "/"),
 						op.set(matchedChar()),
 						factorExpression(),
-						push(new ArithmeticOperationNode(
-								ParserHelpers.arithmeticOperationFromChar(op.get()), 
+						push(ParserHelpers.makeBinaryExpression(
+								op.get(), 
 								pop(1), 
 								pop()))						
 						));
@@ -64,7 +66,7 @@ public class CalculatorGrammar extends BaseParser<CalculatorNode> {
 	public Rule literal() {
 		return Sequence(
 				OneOrMore(CharRange('0', '9')),
-				push(new LiteralNode(Integer.parseInt(match()))));
+				push(new DOMLiteralExpression(Integer.parseInt(match()))));
 	}
 	
 	public Rule space() {
@@ -72,18 +74,18 @@ public class CalculatorGrammar extends BaseParser<CalculatorNode> {
 	}
 	
 	private static class ParserHelpers {
-		public static ArithmeticOperation arithmeticOperationFromChar(char op) {
+		public static DOMBinaryExpression makeBinaryExpression(char op, DOMExpression leftExpression, DOMExpression rightExpression) {
 			if(op == '+') {
-				return ArithmeticOperation.Add;
+				return new DOMAddExpression(leftExpression, rightExpression);
 			} else if(op == '-') {
-				return ArithmeticOperation.Sub;
+				return new DOMSubExpression(leftExpression, rightExpression);
 			} else if(op == '*') {
-				return ArithmeticOperation.Mul;
+				return new DOMMulExpression(leftExpression, rightExpression);
 			} else if(op == '/') {
-				return ArithmeticOperation.Div;					
-			} else {
-				throw new RuntimeException();
+				return new DOMDivExpression(leftExpression, rightExpression);					
 			}
+			
+			throw new RuntimeException();
 		}
 	} 
 }
