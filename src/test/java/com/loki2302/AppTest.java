@@ -32,6 +32,23 @@ public class AppTest {
 		assertTrue(failureReasons.get(0).getClass() == DivisionByZeroFailureReason.class);
 	}
 	
+	@Test
+	public void canHandleNestedDivisionByZero() {
+		EvaluationResult evaluationResult = Calculator.calculate("1 + (1 / 0)");
+		assertFalse(evaluationResult.isOk());
+		
+		List<FailureReason> failureReasons = evaluationResult.getFailureReasons();
+		assertEquals(1, failureReasons.size());		
+		assertTrue(failureReasons.get(0).getClass() == SubexpressionInErrorFailureReason.class);
+		
+		SubexpressionInErrorFailureReason subexpressionFailureReason = 
+				(SubexpressionInErrorFailureReason)failureReasons.get(0);
+		EvaluationResult subexpressionEvaluationResult = 
+				subexpressionFailureReason.getSubexpressionEvaluationResult();
+		assertEquals(1, subexpressionEvaluationResult.getFailureReasons().size());		
+		assertTrue(subexpressionEvaluationResult.getFailureReasons().get(0).getClass() == DivisionByZeroFailureReason.class);
+	}
+	
 	private static int calculate(String expression) {
 		EvaluationResult evaluationResult = Calculator.calculate(expression);
 		assertTrue(evaluationResult.isOk());
