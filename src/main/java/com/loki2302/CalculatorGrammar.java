@@ -13,11 +13,16 @@ import com.loki2302.dom.DOMMulExpression;
 import com.loki2302.dom.DOMSubExpression;
 
 public class CalculatorGrammar extends BaseParser<DOMExpression> {
-	public Rule expression() {
-		return FirstOf(			
-				additiveExpression(),
-				parensExpression(),
+	public Rule rootExpression() {
+		return Sequence(
+				expression(),
 				EOI);
+	}
+	
+	public Rule expression() {
+		return FirstOf(
+				additiveExpression(),
+				parensExpression());
 	}
 	
 	public Rule parensExpression() {

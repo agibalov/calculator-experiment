@@ -11,7 +11,7 @@ public class CalculatorParser {
 	public DOMExpression parse(String expression) {
 		CalculatorGrammar grammar = Parboiled.createParser(CalculatorGrammar.class);
 		ParsingResult<DOMExpression> result = 
-				new RecoveringParseRunner<DOMExpression>(grammar.expression())
+				new RecoveringParseRunner<DOMExpression>(grammar.rootExpression())
 				.run(expression);
 		return result.resultValue;
 	}
