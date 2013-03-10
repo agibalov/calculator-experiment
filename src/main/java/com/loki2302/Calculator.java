@@ -22,8 +22,13 @@ public class Calculator {
 		return domExpression.accept(new DOMExpressionVisitor<EvaluationResult>() {
 			@Override
 			public EvaluationResult visitLiteralExpression(DOMLiteralExpression expression) {
-				int value = expression.getValue();
-				return EvaluationResult.ok(value);
+				String valueString = expression.getValueString();
+				try {
+					int value = Integer.parseInt(valueString);
+					return EvaluationResult.ok(value);
+				} catch(NumberFormatException e) {}
+				
+				return EvaluationResult.fail(new BadNumberFailureReason());
 			}
 
 			@Override

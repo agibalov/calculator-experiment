@@ -66,7 +66,7 @@ public class CalculatorGrammar extends BaseParser<DOMExpression> {
 	public Rule literal() {
 		return Sequence(
 				OneOrMore(CharRange('0', '9')),
-				push(new DOMLiteralExpression(Integer.parseInt(match()))));
+				push(new DOMLiteralExpression(match())));
 	}
 	
 	public Rule space() {

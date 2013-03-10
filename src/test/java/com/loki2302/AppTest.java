@@ -49,6 +49,16 @@ public class AppTest {
 		assertTrue(subexpressionEvaluationResult.getFailureReasons().get(0).getClass() == DivisionByZeroFailureReason.class);
 	}
 	
+	@Test
+	public void canHandleBadNumbers() {
+		EvaluationResult evaluationResult = Calculator.calculate("999999999999999999");
+		assertFalse(evaluationResult.isOk());
+		
+		List<FailureReason> failureReasons = evaluationResult.getFailureReasons();
+		assertEquals(1, failureReasons.size());		
+		assertTrue(failureReasons.get(0).getClass() == BadNumberFailureReason.class);
+	}
+	
 	private static int calculate(String expression) {
 		EvaluationResult evaluationResult = Calculator.calculate(expression);
 		assertTrue(evaluationResult.isOk());

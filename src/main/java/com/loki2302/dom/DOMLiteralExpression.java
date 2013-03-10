@@ -1,14 +1,14 @@
 package com.loki2302.dom;
 
 public class DOMLiteralExpression implements DOMExpression {
-	private final int value;
+	private final String valueString;
 	
-	public DOMLiteralExpression(int value) {
-		this.value = value;
+	public DOMLiteralExpression(String valueString) {
+		this.valueString = valueString;
 	}
 	
-	public int getValue() {
-		return value;
+	public String getValueString() {
+		return valueString;
 	}
 	
 	@Override
@@ -18,6 +18,6 @@ public class DOMLiteralExpression implements DOMExpression {
 	
 	@Override
 	public String toString() {
-		return String.format("(%d)", value);
+		return String.format("(%s)", valueString);
 	}	
 }
