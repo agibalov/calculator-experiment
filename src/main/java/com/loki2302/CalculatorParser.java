@@ -6,7 +6,6 @@ import org.parboiled.support.ParsingResult;
 
 import com.loki2302.dom.DOMExpression;
 
-
 public class CalculatorParser {
 	public DOMExpression parse(String expression) {
 		CalculatorGrammar grammar = Parboiled.createParser(CalculatorGrammar.class);

@@ -3,6 +3,8 @@ package com.loki2302;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.loki2302.failure.FailureReason;
+
 
 public class EvaluationResult {
 	private boolean isOk;

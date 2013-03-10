@@ -1,10 +1,18 @@
 package com.loki2302.dom;
 
+import org.parboiled.support.IndexRange;
+
 public class DOMLiteralExpression implements DOMExpression {
+	private final IndexRange indexRange;
 	private final String valueString;
 	
-	public DOMLiteralExpression(String valueString) {
-		this.valueString = valueString;
+	public DOMLiteralExpression(IndexRange indexRange, String valueString) {
+		this.indexRange = indexRange;
+		this.valueString = valueString;		
+	}
+	
+	public IndexRange getIndexRange() {
+		return indexRange;
 	}
 	
 	public String getValueString() {

@@ -10,6 +10,10 @@ import com.loki2302.dom.DOMExpressionVisitor;
 import com.loki2302.dom.DOMLiteralExpression;
 import com.loki2302.dom.DOMMulExpression;
 import com.loki2302.dom.DOMSubExpression;
+import com.loki2302.failure.BadNumberFailureReason;
+import com.loki2302.failure.DivisionByZeroFailureReason;
+import com.loki2302.failure.FailureReason;
+import com.loki2302.failure.SubexpressionInErrorFailureReason;
 
 public class Calculator {
 	public static EvaluationResult calculate(String expression) {
@@ -28,7 +32,7 @@ public class Calculator {
 					return EvaluationResult.ok(value);
 				} catch(NumberFormatException e) {}
 				
-				return EvaluationResult.fail(new BadNumberFailureReason());
+				return EvaluationResult.fail(new BadNumberFailureReason(expression));
 			}
 
 			@Override

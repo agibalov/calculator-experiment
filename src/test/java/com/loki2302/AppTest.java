@@ -6,6 +6,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.loki2302.failure.BadNumberFailureReason;
+import com.loki2302.failure.DivisionByZeroFailureReason;
+import com.loki2302.failure.FailureReason;
+import com.loki2302.failure.SubexpressionInErrorFailureReason;
+
 public class AppTest {	
 	@Test
 	public void calculatorIsOk() {
